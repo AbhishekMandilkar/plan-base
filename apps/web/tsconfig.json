@@ -14,5 +14,6 @@
       "@planview/ui/*": ["../../packages/ui/src/*"],
       "@planview/shared/*": ["../../packages/shared/src/*"]
     }
-  }
+  },
+  "exclude": ["**/*.test.ts"]
 }

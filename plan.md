@@ -33,27 +33,26 @@ plan files (Cursor and Claude Code) and displays them in a unified UI.
 - [x] Native folder picker via Electrobun `Utils.openFileDialog`
 - [x] Save selected roots to settings.json in userData
 - [x] Allow adding/removing roots later from Settings
-- [x] Print out the project roots on the main app screen to verify onboarding works
 
 ## Phase 3 — Filesystem scanner
 
-- [ ] Scanner runs in main process (has Node.js fs access)
-- [ ] Always scan home dir (`~`) for:
+- [x] Scanner runs in main process (has Node.js fs access)
+- [x] Always scan home dir (`~`) for:
   - `~/.cursor/plans/*.md`
   - `~/.claude/plans/*.md` (if exists)
-- [ ] For each project root, scan up to 3 levels deep:
+- [x] For each project root, scan up to 3 levels deep:
   - `<root>/<project>/.cursor/plans/*.md`
   - `<root>/<project>/.claude/*.md`
-- [ ] Skip directories: `node_modules`, `.git`, `dist`, `build`, `.next`, `out`
-- [ ] Extract per-plan metadata:
+- [x] Skip directories: `node_modules`, `.git`, `dist`, `build`, `.next`, `out`
+- [x] Extract per-plan metadata:
   - Title (first H1 or filename)
   - Source tool (cursor or claude — inferred from path)
   - Project name (parent folder name)
   - File path (absolute)
   - Last modified (`fs.stat` mtime)
   - Checklist progress (count `- [ ]` vs `- [x]`)
-- [ ] Expose via IPC: `ipcMain.handle('scan-plans', ...)`
-- [ ] Re-scan on app focus (debounced, 2s)
+- [x] Expose via IPC: `ipcMain.handle('scan-plans', ...)`
+- [x] Re-scan on app focus (debounced, 2s)
 
 ## Phase 4 — Core UI
 

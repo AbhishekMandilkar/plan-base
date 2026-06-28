@@ -1,23 +1,31 @@
-import {
-  Empty,
-  EmptyDescription,
-  EmptyHeader,
-  EmptyMedia,
-  EmptyTitle,
-} from "@planview/ui/components/empty";
+import { AGENT_IDS } from "@planview/shared/agents";
 import { createFileRoute } from "@tanstack/react-router";
-import { LayoutList } from "lucide-react";
+import { z } from "zod";
 
 import Loader from "@/components/loader";
 import { Onboarding } from "@/components/onboarding";
+import { PlanList } from "@/components/plan-list";
 import { useAppConfig } from "@/hooks/use-app-config";
+import { usePlanFilter } from "@/hooks/use-plan-filter";
+import { usePlansStore } from "@/stores/plans-store";
+
+const homeSearchSchema = z.object({
+  view: z.enum(["recent", "completed"]).optional(),
+  agent: z.enum(AGENT_IDS).optional(),
+  project: z.string().optional(),
+});
 
 export const Route = createFileRoute("/")({
+  validateSearch: homeSearchSchema,
   component: HomeComponent,
 });
 
 function HomeComponent() {
-  const { isLoading, needsOnboarding, projectRoots } = useAppConfig();
+  const { isLoading, needsOnboarding } = useAppConfig();
+  const { filteredPlans, label, hasActiveFilter } = usePlanFilter();
+  const isScanning = usePlansStore((state) => state.isScanning);
+  const selectedPlanId = usePlansStore((state) => state.selectedPlanId);
+  const setSelectedPlanId = usePlansStore((state) => state.setSelectedPlanId);
 
   if (isLoading) {
     return (
@@ -32,17 +40,15 @@ function HomeComponent() {
   }
 
   return (
-    <Empty className="h-full border-0">
-      <EmptyHeader>
-        <EmptyMedia variant="icon">
-          <LayoutList />
-        </EmptyMedia>
-        <EmptyTitle>No plans found yet</EmptyTitle>
-        <EmptyDescription>
-          Scanning {projectRoots.length} project folder{projectRoots.length === 1 ? "" : "s"}. Plan
-          cards will appear here once the scanner is wired up.
-        </EmptyDescription>
-      </EmptyHeader>
-    </Empty>
+    <div className="h-full min-h-0">
+      <PlanList
+        plans={filteredPlans}
+        isScanning={isScanning}
+        selectedPlanId={selectedPlanId}
+        onSelectPlan={(plan) => setSelectedPlanId(plan.id)}
+        filterLabel={label}
+        hasActiveFilter={hasActiveFilter}
+      />
+    </div>
   );
 }

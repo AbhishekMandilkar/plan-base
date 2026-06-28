@@ -23,8 +23,22 @@ import {
   Settings,
 } from "lucide-react";
 import type { CSSProperties, ReactNode } from "react";
+import { useMemo } from "react";
 
+import { PlanStatusBar } from "@/components/plan-status-bar";
 import { AgentIcon } from "@/lib/agents";
+import { getPlanCounts, getSortedProjectNames } from "@/lib/plan-counts";
+import {
+  ALL_PLANS_SEARCH,
+  getPlanFilterLabel,
+  isSamePlanFilter,
+  parsePlanFilterFromSearch,
+  searchForAgent,
+  searchForProject,
+  searchForView,
+  type HomeSearchParams,
+} from "@/lib/plan-filter";
+import { usePlansStore } from "@/stores/plans-store";
 
 const SIDEBAR_WIDTH = "13.75rem"; // 220px per PRD
 const DETAIL_WIDTH = "17.5rem"; // 280px per PRD
@@ -35,7 +49,21 @@ type AppShellProps = {
 
 export function AppShell({ children }: AppShellProps) {
   const pathname = useRouterState({ select: (state) => state.location.pathname });
+  const search = useRouterState({ select: (state) => state.location.search as HomeSearchParams });
   const isSettings = pathname === "/settings";
+  const isHome = pathname === "/";
+  const filter = useMemo(
+    () => (isHome ? parsePlanFilterFromSearch(search) : { type: "all" as const }),
+    [isHome, search],
+  );
+  const plans = usePlansStore((state) => state.plans);
+  const counts = getPlanCounts(plans);
+  const projectNames = getSortedProjectNames(counts.byProject);
+  const headerTitle = isSettings
+    ? "Settings"
+    : isHome && filter.type !== "all"
+      ? getPlanFilterLabel(filter)
+      : "Plans";
 
   return (
     <TooltipProvider>
@@ -43,7 +71,7 @@ export function AppShell({ children }: AppShellProps) {
         className="h-svh overflow-hidden"
         style={{ "--sidebar-width": SIDEBAR_WIDTH } as CSSProperties}
       >
-        <Sidebar collapsible="none" className="border-r border-sidebar-border">
+        <Sidebar collapsible="none" className="h-svh border-r border-sidebar-border">
           <div
             className="electrobun-webkit-app-region-drag h-11 shrink-0 border-b border-sidebar-border"
             aria-hidden
@@ -55,25 +83,36 @@ export function AppShell({ children }: AppShellProps) {
               <SidebarGroupContent>
                 <SidebarMenu>
                   <SidebarMenuItem>
-                    <SidebarMenuButton isActive={pathname === "/"} render={<Link to="/" />}>
+                    <SidebarMenuButton
+                      isActive={isHome && isSamePlanFilter(filter, { type: "all" })}
+                      render={<Link to="/" search={ALL_PLANS_SEARCH} />}
+                    >
                       <LayoutList />
                       <span>All plans</span>
                     </SidebarMenuButton>
-                    <SidebarMenuBadge>0</SidebarMenuBadge>
+                    <SidebarMenuBadge>{counts.all}</SidebarMenuBadge>
                   </SidebarMenuItem>
                   <SidebarMenuItem>
-                    <SidebarMenuButton render={<Link to="/" search={{ view: "recent" }} />}>
+                    <SidebarMenuButton
+                      isActive={isHome && isSamePlanFilter(filter, { type: "view", view: "recent" })}
+                      render={<Link to="/" search={searchForView("recent")} />}
+                    >
                       <Clock />
                       <span>Recent</span>
                     </SidebarMenuButton>
-                    <SidebarMenuBadge>0</SidebarMenuBadge>
+                    <SidebarMenuBadge>{counts.recent}</SidebarMenuBadge>
                   </SidebarMenuItem>
                   <SidebarMenuItem>
-                    <SidebarMenuButton render={<Link to="/" search={{ view: "completed" }} />}>
+                    <SidebarMenuButton
+                      isActive={
+                        isHome && isSamePlanFilter(filter, { type: "view", view: "completed" })
+                      }
+                      render={<Link to="/" search={searchForView("completed")} />}
+                    >
                       <CheckCircle2 />
                       <span>Completed</span>
                     </SidebarMenuButton>
-                    <SidebarMenuBadge>0</SidebarMenuBadge>
+                    <SidebarMenuBadge>{counts.completed}</SidebarMenuBadge>
                   </SidebarMenuItem>
                 </SidebarMenu>
               </SidebarGroupContent>
@@ -87,11 +126,14 @@ export function AppShell({ children }: AppShellProps) {
                 <SidebarMenu>
                   {AGENTS.map((agent) => (
                     <SidebarMenuItem key={agent.id}>
-                      <SidebarMenuButton>
+                      <SidebarMenuButton
+                        isActive={isHome && isSamePlanFilter(filter, { type: "agent", agent: agent.id })}
+                        render={<Link to="/" search={searchForAgent(agent.id)} />}
+                      >
                         <AgentIcon agent={agent.id} className="size-4 shrink-0" />
                         <span>{agent.label}</span>
                       </SidebarMenuButton>
-                      <SidebarMenuBadge>0</SidebarMenuBadge>
+                      <SidebarMenuBadge>{counts.byAgent[agent.id]}</SidebarMenuBadge>
                     </SidebarMenuItem>
                   ))}
                 </SidebarMenu>
@@ -103,9 +145,27 @@ export function AppShell({ children }: AppShellProps) {
             <SidebarGroup>
               <SidebarGroupLabel>Project</SidebarGroupLabel>
               <SidebarGroupContent>
-                <p className="px-2 py-1.5 text-xs text-sidebar-foreground/60">
-                  Projects appear after the first scan.
-                </p>
+                {projectNames.length === 0 ? (
+                  <p className="px-2 py-1.5 text-xs text-sidebar-foreground/60">
+                    Projects appear after the first scan.
+                  </p>
+                ) : (
+                  <SidebarMenu>
+                    {projectNames.map((project) => (
+                      <SidebarMenuItem key={project}>
+                        <SidebarMenuButton
+                          isActive={
+                            isHome && isSamePlanFilter(filter, { type: "project", project })
+                          }
+                          render={<Link to="/" search={searchForProject(project)} />}
+                        >
+                          <span>{project}</span>
+                        </SidebarMenuButton>
+                        <SidebarMenuBadge>{counts.byProject[project]}</SidebarMenuBadge>
+                      </SidebarMenuItem>
+                    ))}
+                  </SidebarMenu>
+                )}
               </SidebarGroupContent>
             </SidebarGroup>
           </SidebarContent>
@@ -126,9 +186,7 @@ export function AppShell({ children }: AppShellProps) {
           <header className="flex h-11 shrink-0 border-b border-border">
             <div className="electrobun-webkit-app-region-drag flex min-w-0 flex-1 items-center px-4">
               <div className="electrobun-webkit-app-region-no-drag flex min-w-0 flex-1 items-center gap-3">
-                <h1 className="shrink-0 text-sm font-medium">
-                  {isSettings ? "Settings" : "Plans"}
-                </h1>
+                <h1 className="shrink-0 text-sm font-medium">{headerTitle}</h1>
               </div>
             </div>
 
@@ -155,6 +213,8 @@ export function AppShell({ children }: AppShellProps) {
               </aside>
             ) : null}
           </div>
+
+          {!isSettings ? <PlanStatusBar /> : null}
         </SidebarInset>
       </SidebarProvider>
     </TooltipProvider>

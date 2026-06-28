@@ -1,4 +1,5 @@
 import type { AppConfig } from "./config";
+import type { Plan } from "./plan";
 
 export type PlanviewRPCSchema = {
   bun: {
@@ -6,6 +7,7 @@ export type PlanviewRPCSchema = {
       getConfig: { params: void; response: AppConfig };
       setConfig: { params: AppConfig; response: void };
       pickDirectory: { params: void; response: string | null };
+      scanPlans: { params: void; response: Plan[] };
     };
     messages: Record<string, never>;
   };

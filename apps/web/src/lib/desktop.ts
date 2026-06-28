@@ -4,6 +4,7 @@ import {
   parseAppConfig,
   type AppConfig,
 } from "@planview/shared/config";
+import type { Plan } from "@planview/shared/plan";
 import type { PlanviewRPCSchema } from "@planview/shared/rpc";
 import { Electroview } from "electrobun/view";
 
@@ -94,4 +95,11 @@ export async function pickDirectory(): Promise<string | null> {
     return null;
   }
   return path.trim();
+}
+
+export async function scanPlans(): Promise<Plan[]> {
+  if (isDesktop()) {
+    return getRpc().request.scanPlans();
+  }
+  return [];
 }

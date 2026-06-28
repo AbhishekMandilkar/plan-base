@@ -6,7 +6,10 @@
   "exports": {
     "./agents": "./src/agents.ts",
     "./config": "./src/config.ts",
-    "./rpc": "./src/rpc.ts"
+    "./plan": "./src/plan.ts",
+    "./plan-parse": "./src/plan-parse.ts",
+    "./rpc": "./src/rpc.ts",
+    "./scan-targets": "./src/scan-targets.ts"
   },
   "dependencies": {
     "zod": "catalog:"

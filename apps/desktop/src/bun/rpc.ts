@@ -3,6 +3,7 @@ import { BrowserView, Utils } from "electrobun/bun";
 import { homedir } from "node:os";
 
 import { readConfig, writeConfig } from "./config";
+import { scanPlans } from "./scanner";
 
 export const planviewRpc = BrowserView.defineRPC<PlanviewRPCSchema>({
   maxRequestTime: 30_000,
@@ -22,6 +23,10 @@ export const planviewRpc = BrowserView.defineRPC<PlanviewRPCSchema>({
 
         const [firstPath] = chosenPaths.filter(Boolean);
         return firstPath ?? null;
+      },
+      scanPlans: async () => {
+        const config = await readConfig();
+        return scanPlans(config);
       },
     },
   },
