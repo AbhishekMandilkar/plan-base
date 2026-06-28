@@ -1,6 +1,5 @@
 import { Toaster } from "@planview/ui/components/sonner";
 import { HeadContent, createRootRouteWithContext } from "@tanstack/react-router";
-import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
 
 import { AppLayout } from "@/components/app-layout";
 import { ThemeProvider } from "@/components/theme-provider";
@@ -46,7 +45,6 @@ function RootComponent() {
         </AppConfigProvider>
         <Toaster richColors />
       </ThemeProvider>
-      <TanStackRouterDevtools position="bottom-left" />
     </>
   );
 }

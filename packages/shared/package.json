@@ -4,6 +4,7 @@
   "private": true,
   "type": "module",
   "exports": {
+    "./agents": "./src/agents.ts",
     "./config": "./src/config.ts",
     "./rpc": "./src/rpc.ts"
   },

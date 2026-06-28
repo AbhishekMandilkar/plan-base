@@ -1,4 +1,4 @@
-import { Input } from "@planview/ui/components/input";
+import { AGENTS } from "@planview/shared/agents";
 import { Separator } from "@planview/ui/components/separator";
 import {
   Sidebar,
@@ -17,15 +17,14 @@ import {
 import { TooltipProvider } from "@planview/ui/components/tooltip";
 import { Link, useRouterState } from "@tanstack/react-router";
 import {
-  Bot,
   CheckCircle2,
   Clock,
   LayoutList,
-  ListFilter,
   Settings,
-  Sparkles,
 } from "lucide-react";
 import type { CSSProperties, ReactNode } from "react";
+
+import { AgentIcon } from "@/lib/agents";
 
 const SIDEBAR_WIDTH = "13.75rem"; // 220px per PRD
 const DETAIL_WIDTH = "17.5rem"; // 280px per PRD
@@ -83,26 +82,23 @@ export function AppShell({ children }: AppShellProps) {
             <SidebarSeparator />
 
             <SidebarGroup>
-              <SidebarGroupLabel>Tool</SidebarGroupLabel>
+              <SidebarGroupLabel>Agents</SidebarGroupLabel>
               <SidebarGroupContent>
                 <SidebarMenu>
-                  <SidebarMenuItem>
-                    <SidebarMenuButton>
-                      <Sparkles />
-                      <span>Cursor</span>
-                    </SidebarMenuButton>
-                    <SidebarMenuBadge>0</SidebarMenuBadge>
-                  </SidebarMenuItem>
-                  <SidebarMenuItem>
-                    <SidebarMenuButton>
-                      <Bot />
-                      <span>Claude Code</span>
-                    </SidebarMenuButton>
-                    <SidebarMenuBadge>0</SidebarMenuBadge>
-                  </SidebarMenuItem>
+                  {AGENTS.map((agent) => (
+                    <SidebarMenuItem key={agent.id}>
+                      <SidebarMenuButton>
+                        <AgentIcon agent={agent.id} className="size-4 shrink-0" />
+                        <span>{agent.label}</span>
+                      </SidebarMenuButton>
+                      <SidebarMenuBadge>0</SidebarMenuBadge>
+                    </SidebarMenuItem>
+                  ))}
                 </SidebarMenu>
               </SidebarGroupContent>
             </SidebarGroup>
+
+            <SidebarSeparator />
 
             <SidebarGroup>
               <SidebarGroupLabel>Project</SidebarGroupLabel>
@@ -131,31 +127,13 @@ export function AppShell({ children }: AppShellProps) {
             <div className="electrobun-webkit-app-region-drag flex min-w-0 flex-1 items-center px-4">
               <div className="electrobun-webkit-app-region-no-drag flex min-w-0 flex-1 items-center gap-3">
                 <h1 className="shrink-0 text-sm font-medium">
-                  {isSettings ? "Settings" : "All plans"}
+                  {isSettings ? "Settings" : "Plans"}
                 </h1>
-                {!isSettings ? (
-                  <>
-                    <Input
-                      type="search"
-                      placeholder="Search plans…"
-                      className="h-8 max-w-xs"
-                      disabled
-                    />
-                    <button
-                      type="button"
-                      className="inline-flex size-8 shrink-0 items-center justify-center rounded-none text-muted-foreground hover:bg-muted hover:text-foreground"
-                      disabled
-                      aria-label="Filter plans"
-                    >
-                      <ListFilter className="size-4" />
-                    </button>
-                  </>
-                ) : null}
               </div>
             </div>
 
             {!isSettings ? (
-              <div className="electrobun-webkit-app-region-drag flex w-[17.5rem] shrink-0 items-center border-l border-border px-4">
+              <div className="electrobun-webkit-app-region-drag flex w-70 shrink-0 items-center border-l border-border px-4">
                 <span className="text-sm font-medium text-muted-foreground">Details</span>
               </div>
             ) : null}
