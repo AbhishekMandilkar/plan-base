@@ -11,7 +11,8 @@
     "rootDirs": ["."],
     "paths": {
       "@/*": ["./src/*"],
-      "@planview/ui/*": ["../../packages/ui/src/*"]
+      "@planview/ui/*": ["../../packages/ui/src/*"],
+      "@planview/shared/*": ["../../packages/shared/src/*"]
     }
   }
 }

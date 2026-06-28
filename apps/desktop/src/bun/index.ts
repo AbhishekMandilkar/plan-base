@@ -1,9 +1,10 @@
 import { BrowserWindow, Updater } from "electrobun/bun";
 
+import { planviewRpc } from "./rpc";
+
 const DEV_SERVER_PORT = 3001;
 const DEV_SERVER_URL = `http://localhost:${DEV_SERVER_PORT}`;
 
-// Check if the web dev server is running for HMR
 async function getMainViewUrl(): Promise<string> {
   const channel = await Updater.localInfo.channel();
   if (channel === "dev") {
@@ -24,9 +25,10 @@ const url = await getMainViewUrl();
 new BrowserWindow({
   title: "planview",
   url,
+  rpc: planviewRpc,
   frame: {
-    width: 1280,
-    height: 820,
+    width: 1100,
+    height: 680,
     x: 120,
     y: 120,
   },

@@ -2,7 +2,10 @@ import { RouterProvider, createRouter } from "@tanstack/react-router";
 import ReactDOM from "react-dom/client";
 
 import Loader from "./components/loader";
+import { initDesktopBridge } from "./lib/desktop";
 import { routeTree } from "./routeTree.gen";
+
+initDesktopBridge();
 
 const router = createRouter({
   routeTree,

@@ -7,8 +7,9 @@
     "moduleResolution": "bundler",
     "noEmit": true,
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "@planview/shared/*": ["../../packages/shared/src/*"]
     }
   },
-  "include": ["src/**/*.ts", "electrobun.config.ts"]
+  "include": ["src/**/*.ts", "src/**/*.d.ts", "electrobun.config.ts"]
 }

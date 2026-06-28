@@ -1,0 +1,3 @@
+{
+  "extends": "@planview/config/tsconfig.base.json"
+}

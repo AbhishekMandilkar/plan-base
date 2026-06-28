@@ -13,10 +13,12 @@
     "check-types": "tsc --noEmit"
   },
   "dependencies": {
+    "@planview/shared": "workspace:*",
     "electrobun": "^1.18.1"
   },
   "devDependencies": {
     "@types/bun": "^1.3.14",
+    "@types/node": "^22.13.14",
     "concurrently": "^10.0.3",
     "typescript": "catalog:"
   }

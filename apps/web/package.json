@@ -13,10 +13,12 @@
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
     "@planview/env": "workspace:*",
+    "@planview/shared": "workspace:*",
     "@planview/ui": "workspace:*",
     "@tailwindcss/vite": "^4.2.2",
     "@tanstack/react-router": "^1.168.22",
     "dotenv": "catalog:",
+    "electrobun": "^1.18.1",
     "lucide-react": "^1.8.0",
     "next-themes": "catalog:",
     "react": "catalog:",

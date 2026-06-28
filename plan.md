@@ -28,12 +28,12 @@ plan files (Cursor and Claude Code) and displays them in a unified UI.
 
 ## Phase 2 — Onboarding flow
 
-- [ ] First-launch detection via electron-store (persisted settings)
-- [ ] Onboarding screen: user picks one or more project root directories
-- [ ] Use Electron's `dialog.showOpenDialog` for folder picker
-- [ ] Save selected roots to settings.json via electron-store
-- [ ] Allow adding/removing roots later from Settings
-- [ ] print out the project roots on the main app screen just to verify that the onboarding flow is working
+- [x] First-launch detection via persisted settings (`Utils.paths.userData/settings.json`)
+- [x] Onboarding screen: user picks one or more project root directories
+- [x] Native folder picker via Electrobun `Utils.openFileDialog`
+- [x] Save selected roots to settings.json in userData
+- [x] Allow adding/removing roots later from Settings
+- [x] Print out the project roots on the main app screen to verify onboarding works
 
 ## Phase 3 — Filesystem scanner
 
