@@ -49,10 +49,9 @@ export function Onboarding() {
     <div className="flex min-h-full items-center justify-center px-4 py-10">
       <div className="w-full max-w-xl space-y-8">
         <div className="space-y-3 pt-2">
-          <p className="text-xs uppercase tracking-[0.24em] text-muted-foreground">Setup</p>
           <h1 className="text-3xl font-semibold tracking-tight">Find your agent plans</h1>
           <p className="max-w-lg text-sm leading-6 text-muted-foreground">
-            Planview collects markdown plans from Cursor and Claude Code. Point it at the folders
+            Planbase collects markdown plans from Cursor and Claude Code. Point it at the folders
             where you keep projects so it knows where to look.
           </p>
         </div>

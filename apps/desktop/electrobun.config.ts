@@ -4,8 +4,8 @@ const webBuildDir = "../web/dist";
 
 export default {
   app: {
-    name: "planview",
-    identifier: "dev.bettertstack.planview.desktop",
+    name: "Planbase",
+    identifier: "dev.planbase.app",
     version: "0.0.1",
   },
   runtime: {

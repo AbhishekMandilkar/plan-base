@@ -14,11 +14,11 @@ export const Route = createRootRouteWithContext<RouterAppContext>()({
   head: () => ({
     meta: [
       {
-        title: "planview",
+        title: "Planbase",
       },
       {
         name: "description",
-        content: "planview is a web application",
+        content: "Browse and open AI agent plan files from Cursor and Claude Code.",
       },
     ],
     links: [

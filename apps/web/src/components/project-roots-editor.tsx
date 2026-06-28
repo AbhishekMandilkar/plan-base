@@ -1,4 +1,3 @@
-import { Badge } from "@planview/ui/components/badge";
 import { Button } from "@planview/ui/components/button";
 import { ScrollArea } from "@planview/ui/components/scroll-area";
 import { FolderOpen, Plus, X } from "lucide-react";
@@ -20,14 +19,11 @@ export function ProjectRootsEditor({
 }: ProjectRootsEditorProps) {
   return (
     <div className="space-y-4">
-      <div className="flex items-center justify-between gap-3">
-        <div className="space-y-1">
-          <p className="text-sm font-medium">Project folders</p>
-          <p className="text-xs text-muted-foreground">
-            Planview scans these directories for Cursor and Claude Code plans.
-          </p>
-        </div>
-        <Badge variant="secondary">{roots.length}</Badge>
+      <div className="space-y-1">
+        <p className="text-sm font-medium">Project folders</p>
+        <p className="text-xs text-muted-foreground">
+          Planbase scans these directories for Cursor and Claude Code plans.
+        </p>
       </div>
 
       <ScrollArea className="h-48 rounded-md border border-border/80 bg-muted/20">

@@ -74,7 +74,7 @@ export function PlanList({
           </EmptyMedia>
           <EmptyTitle>No {filterLabel?.toLowerCase() ?? "matching"} plans</EmptyTitle>
           <EmptyDescription>
-            Nothing matches this filter. Try All plans to see everything.
+            Nothing matches this filter. Try All to see everything.
           </EmptyDescription>
         </EmptyHeader>
       </Empty>

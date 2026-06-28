@@ -21,12 +21,7 @@ import {
 } from "@planview/ui/components/sidebar";
 import { TooltipProvider } from "@planview/ui/components/tooltip";
 import { Link, useRouterState } from "@tanstack/react-router";
-import {
-  CheckCircle2,
-  Clock,
-  LayoutList,
-  Settings,
-} from "lucide-react";
+import { Clock, LayoutList, Settings } from "lucide-react";
 import type { CSSProperties, ReactNode } from "react";
 import { useEffect, useMemo } from "react";
 
@@ -99,7 +94,7 @@ export function AppShell({ children }: AppShellProps) {
 
           <SidebarContent className="electrobun-webkit-app-region-no-drag">
             <SidebarGroup>
-              <SidebarGroupLabel>Views</SidebarGroupLabel>
+              <SidebarGroupLabel>Plans</SidebarGroupLabel>
               <SidebarGroupContent>
                 <SidebarMenu>
                   <SidebarMenuItem>
@@ -108,7 +103,7 @@ export function AppShell({ children }: AppShellProps) {
                       render={<Link to="/" search={ALL_PLANS_SEARCH} />}
                     >
                       <LayoutList />
-                      <span>All plans</span>
+                      <span>All</span>
                     </SidebarMenuButton>
                     <SidebarMenuBadge>{counts.all}</SidebarMenuBadge>
                   </SidebarMenuItem>
@@ -121,18 +116,6 @@ export function AppShell({ children }: AppShellProps) {
                       <span>Recent</span>
                     </SidebarMenuButton>
                     <SidebarMenuBadge>{counts.recent}</SidebarMenuBadge>
-                  </SidebarMenuItem>
-                  <SidebarMenuItem>
-                    <SidebarMenuButton
-                      isActive={
-                        isHome && isSamePlanFilter(filter, { type: "view", view: "completed" })
-                      }
-                      render={<Link to="/" search={searchForView("completed")} />}
-                    >
-                      <CheckCircle2 />
-                      <span>Completed</span>
-                    </SidebarMenuButton>
-                    <SidebarMenuBadge>{counts.completed}</SidebarMenuBadge>
                   </SidebarMenuItem>
                 </SidebarMenu>
               </SidebarGroupContent>

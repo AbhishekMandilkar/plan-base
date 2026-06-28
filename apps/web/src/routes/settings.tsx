@@ -50,7 +50,7 @@ function SettingsComponent() {
   return (
     <div className="mx-auto max-w-xl space-y-6 p-6">
       <p className="text-sm text-muted-foreground">
-        Add or remove the directories Planview scans for agent plan files.
+        Add or remove the directories Planbase scans for agent plan files.
       </p>
 
       <ProjectRootsEditor

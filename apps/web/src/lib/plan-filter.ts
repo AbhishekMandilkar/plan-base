@@ -3,7 +3,7 @@ import type { Plan } from "@planview/shared/plan";
 
 export const RECENT_WINDOW_MS = 7 * 24 * 60 * 60 * 1000;
 
-export type PlanViewFilter = "recent" | "completed";
+export type PlanViewFilter = "recent";
 
 export type PlanFilter =
   | { type: "all" }
@@ -35,12 +35,7 @@ export function filterPlans(plans: Plan[], filter: PlanFilter, now = Date.now())
     case "all":
       return plans;
     case "view":
-      if (filter.view === "recent") {
-        return plans.filter((plan) => now - plan.lastModified <= RECENT_WINDOW_MS);
-      }
-      return plans.filter(
-        (plan) => plan.totalTasks > 0 && plan.completedTasks === plan.totalTasks,
-      );
+      return plans.filter((plan) => now - plan.lastModified <= RECENT_WINDOW_MS);
     case "agent":
       return plans.filter((plan) => plan.tool === filter.agent);
     case "project":
@@ -51,9 +46,9 @@ export function filterPlans(plans: Plan[], filter: PlanFilter, now = Date.now())
 export function getPlanFilterLabel(filter: PlanFilter): string {
   switch (filter.type) {
     case "all":
-      return "All plans";
+      return "All";
     case "view":
-      return filter.view === "recent" ? "Recent" : "Completed";
+      return "Recent";
     case "agent":
       return AGENTS_BY_ID[filter.agent].label;
     case "project":

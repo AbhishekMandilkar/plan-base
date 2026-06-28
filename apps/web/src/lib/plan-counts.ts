@@ -7,7 +7,6 @@ import { RECENT_WINDOW_MS } from "@/lib/plan-filter";
 export type PlanCounts = {
   all: number;
   recent: number;
-  completed: number;
   byAgent: Record<AgentId, number>;
   byProject: Record<string, number>;
 };
@@ -17,15 +16,10 @@ export function getPlanCounts(plans: Plan[], now = Date.now()): PlanCounts {
   const byProject: Record<string, number> = {};
 
   let recent = 0;
-  let completed = 0;
 
   for (const plan of plans) {
     if (now - plan.lastModified <= RECENT_WINDOW_MS) {
       recent += 1;
-    }
-
-    if (plan.totalTasks > 0 && plan.completedTasks === plan.totalTasks) {
-      completed += 1;
     }
 
     byAgent[plan.tool] += 1;
@@ -35,7 +29,6 @@ export function getPlanCounts(plans: Plan[], now = Date.now()): PlanCounts {
   return {
     all: plans.length,
     recent,
-    completed,
     byAgent,
     byProject,
   };

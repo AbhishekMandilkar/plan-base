@@ -12,7 +12,7 @@ import { usePlanFilter } from "@/hooks/use-plan-filter";
 import { usePlansStore } from "@/stores/plans-store";
 
 const homeSearchSchema = z.object({
-  view: z.enum(["recent", "completed"]).optional(),
+  view: z.enum(["recent"]).optional(),
   agent: z.enum(AGENT_IDS).optional(),
   project: z.string().optional(),
 });

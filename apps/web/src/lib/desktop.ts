@@ -9,7 +9,8 @@ import type { Plan } from "@planview/shared/plan";
 import type { PlanEditor, PlanviewRPCSchema } from "@planview/shared/rpc";
 import { Electroview } from "electrobun/view";
 
-const STORAGE_KEY = "planview-config";
+const STORAGE_KEY = "planbase-config";
+const LEGACY_STORAGE_KEY = "planview-config";
 
 type RpcInstance = ReturnType<typeof Electroview.defineRPC<PlanviewRPCSchema>>;
 
@@ -26,7 +27,7 @@ function hasElectrobunBridge(): boolean {
 }
 
 function readWebFallbackConfig(): AppConfig {
-  const raw = localStorage.getItem(STORAGE_KEY);
+  const raw = localStorage.getItem(STORAGE_KEY) ?? localStorage.getItem(LEGACY_STORAGE_KEY);
   if (!raw) {
     return defaultAppConfig;
   }

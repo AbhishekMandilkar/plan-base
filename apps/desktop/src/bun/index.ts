@@ -23,7 +23,7 @@ async function getMainViewUrl(): Promise<string> {
 const url = await getMainViewUrl();
 
 const mainWindow = new BrowserWindow({
-  title: "planview",
+  title: "Planbase",
   url,
   rpc: planviewRpc,
   titleBarStyle: "hiddenInset",

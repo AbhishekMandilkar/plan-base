@@ -2,7 +2,7 @@ import { Outlet } from "@tanstack/react-router";
 import { Suspense, lazy } from "react";
 
 import Loader from "@/components/loader";
-import Header from "@/components/header";
+import { TitleBarStrip } from "@/components/title-bar-strip";
 import { useAppConfig } from "@/hooks/use-app-config";
 import { usePlansScan } from "@/hooks/use-plans-scan";
 
@@ -18,9 +18,10 @@ export function AppLayout() {
 
   if (!showShell) {
     return (
-      <div className="grid h-svh grid-rows-[auto_1fr]">
-        <Header />
-        <Outlet />
+      <div className="flex h-svh flex-col overflow-hidden">
+        <div className="min-h-0 flex-1 overflow-auto">
+          <Outlet />
+        </div>
       </div>
     );
   }

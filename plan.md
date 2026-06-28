@@ -1,4 +1,4 @@
-# Planview — Implementation Plan
+# Planbase — Implementation Plan
 
 ## Overview
 A cross-platform Electron desktop app that scans your filesystem for AI agent

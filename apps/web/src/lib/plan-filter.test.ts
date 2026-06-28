@@ -42,7 +42,7 @@ describe("parsePlanFilterFromSearch", () => {
   });
 
   test("prioritizes agent over view", () => {
-    expect(parsePlanFilterFromSearch({ agent: "claude", view: "completed" })).toEqual({
+    expect(parsePlanFilterFromSearch({ agent: "claude", view: "recent" })).toEqual({
       type: "agent",
       agent: "claude",
     });
@@ -81,11 +81,6 @@ describe("filterPlans", () => {
   test("filters recent plans", () => {
     const filtered = filterPlans(plans, { type: "view", view: "recent" }, NOW);
     expect(filtered.map((plan) => plan.id)).toEqual(["recent-open", "completed", "cursor-plan"]);
-  });
-
-  test("filters completed plans", () => {
-    const filtered = filterPlans(plans, { type: "view", view: "completed" }, NOW);
-    expect(filtered.map((plan) => plan.id)).toEqual(["completed"]);
   });
 
   test("filters by agent", () => {
