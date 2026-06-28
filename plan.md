@@ -11,7 +11,7 @@ plan files (Cursor and Claude Code) and displays them in a unified UI.
 - Tailwind CSS
 - shadcn/ui
 - gray-matter (markdown frontmatter parsing)
-- marked (markdown rendering)
+- react-markdown + remark-gfm (markdown rendering; Mermaid via dynamic import)
 
 ---
 
@@ -56,13 +56,13 @@ plan files (Cursor and Claude Code) and displays them in a unified UI.
 
 ## Phase 4 — Core UI
 
-- [ ] App shell: sidebar (220px) + main list + detail panel (280px)
-- [ ] Sidebar sections: All plans, Recent, Completed, by Tool, by Project
-- [ ] Plan cards in main area:
+- [x] App shell: sidebar (220px) + main list + detail panel (280px)
+- [x] Sidebar sections: All plans, Recent, Completed, by Tool, by Project
+- [x] Plan cards in main area:
   - Title, tool badge (Cursor / Claude Code), project name, relative time
   - 2-line preview of plan content
   - Progress bar (checked / total checklist items)
-- [ ] Detail panel on card click:
+- [x] Detail panel on card click:
   - Full checklist rendered with check/uncheck state (read-only)
   - "Open in editor" button → `shell.openPath(filePath)`
   - "Show in Finder/Explorer" button → `shell.showItemInFolder(filePath)`

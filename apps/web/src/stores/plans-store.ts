@@ -33,10 +33,15 @@ export const usePlansStore = create<PlansState>((set, get) => ({
 
     try {
       const plans = await scanPlans();
+      const selectedPlanId = get().selectedPlanId;
+      const selectedStillExists =
+        selectedPlanId !== null && plans.some((plan) => plan.id === selectedPlanId);
+
       set({
         plans,
         isScanning: false,
         lastScannedAt: Date.now(),
+        selectedPlanId: selectedStillExists ? selectedPlanId : null,
       });
     } catch (scanError: unknown) {
       set({

@@ -8,10 +8,12 @@
     "./config": "./src/config.ts",
     "./plan": "./src/plan.ts",
     "./plan-parse": "./src/plan-parse.ts",
+    "./plan-content": "./src/plan-content.ts",
     "./rpc": "./src/rpc.ts",
     "./scan-targets": "./src/scan-targets.ts"
   },
   "dependencies": {
+    "gray-matter": "^4.0.3",
     "zod": "catalog:"
   },
   "devDependencies": {

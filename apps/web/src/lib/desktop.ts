@@ -4,6 +4,7 @@ import {
   parseAppConfig,
   type AppConfig,
 } from "@planview/shared/config";
+import type { PlanContent } from "@planview/shared/plan-content";
 import type { Plan } from "@planview/shared/plan";
 import type { PlanviewRPCSchema } from "@planview/shared/rpc";
 import { Electroview } from "electrobun/view";
@@ -102,4 +103,27 @@ export async function scanPlans(): Promise<Plan[]> {
     return getRpc().request.scanPlans();
   }
   return [];
+}
+
+export async function readPlanContent(filePath: string): Promise<PlanContent | null> {
+  if (isDesktop()) {
+    try {
+      return await getRpc().request.readPlanContent({ filePath });
+    } catch {
+      return null;
+    }
+  }
+  return null;
+}
+
+export async function openFile(filePath: string): Promise<void> {
+  if (isDesktop()) {
+    await getRpc().request.openFile({ filePath });
+  }
+}
+
+export async function revealInFinder(filePath: string): Promise<void> {
+  if (isDesktop()) {
+    await getRpc().request.revealInFinder({ filePath });
+  }
 }

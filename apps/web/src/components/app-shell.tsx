@@ -1,4 +1,9 @@
 import { AGENTS } from "@planview/shared/agents";
+import {
+  ResizableHandle,
+  ResizablePanel,
+  ResizablePanelGroup,
+} from "@planview/ui/components/resizable";
 import { Separator } from "@planview/ui/components/separator";
 import {
   Sidebar,
@@ -23,8 +28,9 @@ import {
   Settings,
 } from "lucide-react";
 import type { CSSProperties, ReactNode } from "react";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 
+import { PlanDetailPanel } from "@/components/plan-detail-panel";
 import { PlanStatusBar } from "@/components/plan-status-bar";
 import { AgentIcon } from "@/lib/agents";
 import { getPlanCounts, getSortedProjectNames } from "@/lib/plan-counts";
@@ -41,7 +47,8 @@ import {
 import { usePlansStore } from "@/stores/plans-store";
 
 const SIDEBAR_WIDTH = "13.75rem"; // 220px per PRD
-const DETAIL_WIDTH = "17.5rem"; // 280px per PRD
+const LIST_PANEL_DEFAULT_SIZE = "40%";
+const DETAIL_PANEL_DEFAULT_SIZE = "60%";
 
 type AppShellProps = {
   children: ReactNode;
@@ -57,6 +64,12 @@ export function AppShell({ children }: AppShellProps) {
     [isHome, search],
   );
   const plans = usePlansStore((state) => state.plans);
+  const selectedPlanId = usePlansStore((state) => state.selectedPlanId);
+  const setSelectedPlanId = usePlansStore((state) => state.setSelectedPlanId);
+  const selectedPlan = useMemo(
+    () => plans.find((plan) => plan.id === selectedPlanId) ?? null,
+    [plans, selectedPlanId],
+  );
   const counts = useMemo(() => getPlanCounts(plans), [plans]);
   const projectNames = useMemo(
     () => getSortedProjectNames(counts.byProject),
@@ -67,6 +80,12 @@ export function AppShell({ children }: AppShellProps) {
     : isHome && filter.type !== "all"
       ? getPlanFilterLabel(filter)
       : "Plans";
+
+  useEffect(() => {
+    if (isSettings && selectedPlanId !== null) {
+      setSelectedPlanId(null);
+    }
+  }, [isSettings, selectedPlanId, setSelectedPlanId]);
 
   return (
     <TooltipProvider>
@@ -186,38 +205,54 @@ export function AppShell({ children }: AppShellProps) {
         </Sidebar>
 
         <SidebarInset className="flex min-h-0 flex-col overflow-hidden">
-          <header className="flex h-11 shrink-0 border-b border-border">
-            <div className="electrobun-webkit-app-region-drag flex min-w-0 flex-1 items-center px-4">
-              <div className="electrobun-webkit-app-region-no-drag flex min-w-0 flex-1 items-center gap-3">
-                <h1 className="shrink-0 text-sm font-medium">{headerTitle}</h1>
-              </div>
-            </div>
-
-            {!isSettings ? (
-              <div className="electrobun-webkit-app-region-drag flex w-70 shrink-0 items-center border-l border-border px-4">
-                <span className="text-sm font-medium text-muted-foreground">Details</span>
-              </div>
-            ) : null}
-          </header>
-
-          <div className="flex min-h-0 flex-1 flex-row overflow-hidden">
-            <div className="min-h-0 min-w-0 flex-1 overflow-auto">{children}</div>
-
-            {!isSettings ? (
-              <aside
-                className="flex min-h-0 shrink-0 flex-col border-l border-border bg-background"
-                style={{ width: DETAIL_WIDTH }}
-              >
-                <div className="flex flex-1 items-center justify-center p-6">
-                  <p className="text-center text-sm text-muted-foreground">
-                    Select a plan to view its contents.
-                  </p>
+          {isSettings ? (
+            <>
+              <header className="flex h-11 shrink-0 border-b border-border">
+                <div className="electrobun-webkit-app-region-drag flex min-w-0 flex-1 items-center px-4">
+                  <div className="electrobun-webkit-app-region-no-drag flex min-w-0 flex-1 items-center gap-3">
+                    <h1 className="shrink-0 text-sm font-medium">{headerTitle}</h1>
+                  </div>
                 </div>
-              </aside>
-            ) : null}
-          </div>
+              </header>
 
-          {!isSettings ? <PlanStatusBar /> : null}
+              <div className="min-h-0 flex-1 overflow-auto">{children}</div>
+            </>
+          ) : (
+            <>
+              <ResizablePanelGroup
+                orientation="horizontal"
+                className="min-h-0 flex-1"
+              >
+                <ResizablePanel
+                  defaultSize={LIST_PANEL_DEFAULT_SIZE}
+                  minSize="20%"
+                  className="flex min-h-0 flex-col"
+                >
+                  <header className="flex h-11 shrink-0 border-b border-border">
+                    <div className="electrobun-webkit-app-region-drag flex min-w-0 flex-1 items-center px-4">
+                      <div className="electrobun-webkit-app-region-no-drag flex min-w-0 flex-1 items-center gap-3">
+                        <h1 className="shrink-0 text-sm font-medium">{headerTitle}</h1>
+                      </div>
+                    </div>
+                  </header>
+
+                  <div className="min-h-0 flex-1 overflow-auto">{children}</div>
+                </ResizablePanel>
+
+                <ResizableHandle />
+
+                <ResizablePanel
+                  defaultSize={DETAIL_PANEL_DEFAULT_SIZE}
+                  minSize="25%"
+                  className="flex min-h-0 flex-col bg-background"
+                >
+                  <PlanDetailPanel plan={selectedPlan} />
+                </ResizablePanel>
+              </ResizablePanelGroup>
+
+              <PlanStatusBar />
+            </>
+          )}
         </SidebarInset>
       </SidebarProvider>
     </TooltipProvider>

@@ -3,7 +3,7 @@ import { BrowserView, Utils } from "electrobun/bun";
 import { homedir } from "node:os";
 
 import { readConfig, writeConfig } from "./config";
-import { scanPlans } from "./scanner";
+import { readPlanContent, scanPlans } from "./scanner";
 
 export const planviewRpc = BrowserView.defineRPC<PlanviewRPCSchema>({
   maxRequestTime: 30_000,
@@ -27,6 +27,22 @@ export const planviewRpc = BrowserView.defineRPC<PlanviewRPCSchema>({
       scanPlans: async () => {
         const config = await readConfig();
         return scanPlans(config);
+      },
+      readPlanContent: async ({ filePath }) => {
+        const content = await readPlanContent(filePath);
+        if (!content) {
+          throw new Error(`Could not read plan at ${filePath}`);
+        }
+        return content;
+      },
+      openFile: async ({ filePath }) => {
+        const opened = Utils.openPath(filePath);
+        if (!opened) {
+          throw new Error(`Could not open ${filePath}`);
+        }
+      },
+      revealInFinder: async ({ filePath }) => {
+        Utils.showItemInFolder(filePath);
       },
     },
   },

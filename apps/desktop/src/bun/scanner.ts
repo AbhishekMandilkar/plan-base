@@ -1,4 +1,5 @@
 import type { AppConfig } from "@planview/shared/config";
+import { parsePlanContent, type PlanContent } from "@planview/shared/plan-content";
 import { parsePlanFile } from "@planview/shared/plan-parse";
 import type { Plan } from "@planview/shared/plan";
 import {
@@ -170,4 +171,19 @@ export async function scanPlans(config: AppConfig): Promise<Plan[]> {
   return parsed
     .filter((plan): plan is Plan => plan !== null)
     .toSorted((left, right) => right.lastModified - left.lastModified);
+}
+
+export async function readPlanContent(filePath: string): Promise<PlanContent | null> {
+  try {
+    const fileStat = await stat(filePath);
+    if (!fileStat.isFile()) {
+      return null;
+    }
+
+    const raw = await readFile(filePath, "utf8");
+    return parsePlanContent(filePath, raw);
+  } catch (error) {
+    console.warn(`Failed to read plan content ${filePath}:`, error);
+    return null;
+  }
 }

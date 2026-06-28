@@ -96,6 +96,7 @@ For each root directory the user added during onboarding, scan up to **3 levels 
 ipcMain.handle('scan-plans', async () => Plan[])
 ipcMain.handle('get-config', async () => AppConfig)
 ipcMain.handle('set-config', async (_, config: AppConfig) => void)
+ipcMain.handle('read-plan-content', async (_, filePath: string) => PlanContent)
 ipcMain.handle('open-file', async (_, filePath: string) => void)
 ipcMain.handle('reveal-in-finder', async (_, filePath: string) => void)
 ipcMain.handle('pick-directory', async () => string | null)
