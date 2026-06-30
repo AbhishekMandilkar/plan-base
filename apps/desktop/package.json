@@ -3,13 +3,13 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "start": "bun run --filter web build && electrobun dev",
+    "start": "bun run --filter web build:desktop && electrobun dev",
     "dev": "electrobun dev --watch",
     "dev:hmr": "concurrently \"bun run hmr\" \"bun run start\"",
     "hmr": "bun run --filter web dev",
-    "build": "bun run --filter web build && electrobun build",
-    "build:stable": "bun run --filter web build && electrobun build --env=stable",
-    "build:canary": "bun run --filter web build && electrobun build --env=canary",
+    "build": "bun run --filter web build:desktop && electrobun build",
+    "build:stable": "bun run --filter web build:desktop && electrobun build --env=stable",
+    "build:canary": "bun run --filter web build:desktop && electrobun build --env=canary",
     "check-types": "tsc --noEmit"
   },
   "dependencies": {

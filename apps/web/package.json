@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite dev",
     "build": "vite build",
+    "build:desktop": "VITE_DEPLOY_TARGET=desktop vite build",
     "serve": "vite preview",
     "start": "vite",
     "check-types": "vite build && tsc --noEmit"
