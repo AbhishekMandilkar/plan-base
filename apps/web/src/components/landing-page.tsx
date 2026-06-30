@@ -15,11 +15,26 @@ function GithubIcon({ className }: { className?: string }) {
   );
 }
 
+const features = [
+  {
+    title: "Indexed",
+    body: "Watches Cursor, Claude Code, and project folders.",
+  },
+  {
+    title: "Searchable",
+    body: "Full-text search. Filter by agent or project.",
+  },
+  {
+    title: "Private",
+    body: "Everything stays on your Mac. No cloud.",
+  },
+] as const;
+
 export function LandingPage() {
   return (
-    <div className="flex min-h-svh flex-col bg-zinc-50 text-zinc-900">
-      <header className="flex items-center justify-between px-8 py-6 md:px-12 lg:px-16">
-        <span className="motion-safe:animate-fade-up text-sm font-medium tracking-tight text-zinc-900">
+    <div className="flex h-dvh flex-col overflow-hidden bg-zinc-50 text-zinc-900">
+      <header className="flex shrink-0 items-center justify-between px-6 py-4 md:px-10 lg:px-14">
+        <span className="motion-safe:animate-fade-up text-sm font-medium tracking-tight">
           Planbase
         </span>
         <a
@@ -30,94 +45,68 @@ export function LandingPage() {
         </a>
       </header>
 
-      <main className="flex flex-1 flex-col">
-        <section className="flex flex-1 flex-col justify-center px-8 pb-24 pt-12 md:px-12 md:pb-32 md:pt-16 lg:px-16 lg:pb-40 lg:pt-20">
-          <div className="mx-auto w-full max-w-3xl">
-            {/* Eyebrow */}
-            <p className="motion-safe:animate-fade-up mb-8 text-sm text-zinc-500 [animation-delay:80ms] md:mb-10 md:text-base">
-              Your AI plans are scattered everywhere.
-            </p>
+      <main className="mx-auto flex min-h-0 w-full max-w-3xl flex-1 flex-col justify-center px-6 md:px-10 lg:px-14">
+        <p className="motion-safe:animate-fade-up mb-4 text-sm text-zinc-500 [animation-delay:80ms] md:mb-5">
+          Your AI plans are scattered everywhere.
+        </p>
 
-            {/* Headline */}
-            <h1 className="motion-safe:animate-fade-up text-4xl font-semibold leading-[1.1] tracking-tight text-zinc-900 [animation-delay:160ms] sm:text-5xl md:text-6xl">
-              Find any plan
-              <br />
-              from two weeks ago
-              <br />
-              <span className="text-zinc-400">in two seconds.</span>
-            </h1>
+        <h1 className="motion-safe:animate-fade-up text-[clamp(2rem,5vw,3.25rem)] font-semibold leading-[1.08] tracking-tight [animation-delay:140ms]">
+          Find any plan from two weeks ago{" "}
+          <span className="text-zinc-400">in two seconds.</span>
+        </h1>
 
-            {/* Body */}
-            <p className="motion-safe:animate-fade-up mt-8 max-w-lg text-base leading-relaxed text-zinc-500 [animation-delay:240ms] md:mt-10 md:text-lg">
-              Planbase indexes every AI agent plan on your Mac.
-              Search by project, filter by tool, open in your editor.
-            </p>
+        <p className="motion-safe:animate-fade-up mt-4 max-w-md text-sm leading-relaxed text-zinc-500 [animation-delay:200ms] md:mt-5 md:text-base">
+          Planbase indexes every AI agent plan on your Mac. Search by project,
+          filter by tool, open in your editor.
+        </p>
 
-            {/* CTA */}
-            <div className="motion-safe:animate-fade-up mt-10 [animation-delay:320ms] md:mt-12">
-              <Button
-                size="lg"
-                className="group h-11 gap-2 px-5 text-sm active:scale-[0.97] active:duration-60"
-                style={{ transition: "transform 160ms cubic-bezier(0.23, 1, 0.32, 1)" }}
-                render={<a href={GITHUB_RELEASES_URL} />}
+        <div className="motion-safe:animate-fade-up mt-6 [animation-delay:260ms] md:mt-7">
+          <Button
+            size="lg"
+            className="group h-11 gap-2 px-5 text-sm active:scale-[0.97] active:duration-60"
+            style={{
+              transition: "transform 160ms cubic-bezier(0.23, 1, 0.32, 1)",
+            }}
+            render={<a href={GITHUB_RELEASES_URL} />}
+          >
+            Download for macOS
+            <ArrowRight
+              className="size-4 transition-transform duration-200 group-hover:translate-x-0.5"
+              style={{
+                transitionTimingFunction: "cubic-bezier(0.23, 1, 0.32, 1)",
+              }}
+            />
+          </Button>
+          <p className="mt-2.5 text-xs text-zinc-400 md:text-sm">
+            Free, 4MB, local-only
+          </p>
+
+          <div className="mt-8 flex flex-col gap-4 border-t border-zinc-200 pt-6 md:mt-10 md:gap-5 md:pt-7">
+            {features.map(({ title, body }, i) => (
+              <div
+                key={title}
+                className="motion-safe:animate-fade-up"
+                style={{ animationDelay: `${320 + i * 60}ms` }}
               >
-                Download for macOS
-                <ArrowRight className="size-4 transition-transform duration-200 group-hover:translate-x-0.5" style={{ transitionTimingFunction: "cubic-bezier(0.23, 1, 0.32, 1)" }} />
-              </Button>
-              <p className="mt-4 text-sm text-zinc-400">
-                Free, 4MB, local-only
-              </p>
-            </div>
+                <p className="text-sm font-medium text-zinc-900">{title}</p>
+                <p className="mt-0.5 text-sm leading-relaxed text-zinc-500">
+                  {body}
+                </p>
+              </div>
+            ))}
           </div>
-        </section>
-
-        {/* Features */}
-        <section className="border-t border-zinc-200 px-8 py-20 md:px-12 md:py-28 lg:px-16 lg:py-32">
-          <div className="mx-auto w-full max-w-3xl">
-            <div className="grid gap-12 md:grid-cols-3 md:gap-8">
-              {[
-                {
-                  title: "Indexed",
-                  body: "Watches Cursor, Claude Code, and project folders automatically.",
-                },
-                {
-                  title: "Searchable",
-                  body: "Full-text search across all your plans. Filter by agent or project.",
-                },
-                {
-                  title: "Private",
-                  body: "Everything stays on your machine. No cloud, no sync, no telemetry.",
-                },
-              ].map(({ title, body }, i) => (
-                <div
-                  key={title}
-                  className="motion-safe:animate-fade-up"
-                  style={{ animationDelay: `${400 + i * 80}ms` }}
-                >
-                  <p className="text-sm font-medium text-zinc-900">{title}</p>
-                  <p className="mt-2 text-sm leading-relaxed text-zinc-500">{body}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        <section className="border-t border-zinc-200 px-8 py-16 md:px-12 md:py-20 lg:px-16">
-          <div className="mx-auto w-full max-w-3xl">
-            <p className="text-sm leading-relaxed text-zinc-500">
-              Built by a developer who got tired of running{" "}
-              <code className="rounded bg-zinc-200 px-1.5 py-0.5 font-mono text-xs text-zinc-700">
-                cd ~/.cursor/plans && ls
-              </code>{" "}
-              every day.
-            </p>
-          </div>
-        </section>
+        </div>
       </main>
 
-      <footer className="px-8 py-6 md:px-12 lg:px-16">
-        <div className="mx-auto w-full max-w-3xl">
-          <p className="text-xs text-zinc-400">Planbase</p>
+      <footer className="shrink-0 px-6 py-4 md:px-10 md:py-5 lg:px-14">
+        <div className="mx-auto w-full max-w-3xl text-center">
+          <p className="motion-safe:animate-fade-up text-xs leading-relaxed text-zinc-400 [animation-delay:500ms]">
+            Built by a developer who got tired of running{" "}
+            <code className="rounded bg-zinc-200 px-1 py-0.5 font-mono text-[10px] text-zinc-600 md:text-xs">
+              cd ~/.cursor/plans && ls
+            </code>{" "}
+            every day.
+          </p>
         </div>
       </footer>
     </div>
